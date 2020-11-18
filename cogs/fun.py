@@ -1,6 +1,7 @@
 import discord
 import random
 import aiohttp
+import typing
 from discord.ext import commands
 
 
@@ -11,7 +12,7 @@ class Fun(commands.Cog):
         self.bot = bot
         self._last_member = None
 
-    @commands.command(name="8ball")
+    @commands.command(name="8ball", brief="**Cooldown:** None\n**Permissions Required:** `None`")
     async def advice(self, ctx, *, question):
         """Answers questions in a typical magic 8ball format"""
         e = discord.Embed(color=0xff0000)
@@ -24,7 +25,20 @@ class Fun(commands.Cog):
              "You may rely on it"]), inline=False)
         await ctx.send(embed=e)
 
-    @commands.command()
+    @commands.command(aliases=["dice"], brief="**Cooldown:** None\n**Permissions Required:** `None`")
+    async def roll(self, ctx, *, sides: int = None):
+        """Rolls a dice"""
+        if sides:
+            if sides > 1000000000:
+                await ctx.send("Please choose a smaller number")
+            else:
+                outcome = random.randint(1, sides)
+                await ctx.send(outcome)
+        else:
+            outcome = random.randint(1, 6)
+            await ctx.send(outcome)
+
+    @commands.command(brief="**Cooldown:** None\n**Permissions Required:** `None`")
     async def choose(self, ctx, option1, option2):
         """Chooses between two things"""
         e = discord.Embed(color=0xff0000)
@@ -32,21 +46,21 @@ class Fun(commands.Cog):
         e.add_field(name="Outcome", value=random.choice([option1, option2]))
         await ctx.send(embed=e)
 
-    @commands.command(aliases=["flip", "coinflip"])
+    @commands.command(aliases=["flip", "coinflip"], brief="**Cooldown:** None\n**Permissions Required:** `None`")
     async def coin(self, ctx):
         """Flips a coin"""
         await ctx.send(random.choice(["Heads!", "Tails!"]))
 
-    @commands.command(aliases=["memes"])
+    @commands.command(aliases=["memes"], brief="**Cooldown:** None\n**Permissions Required:** `None`")
     @commands.guild_only()
     async def meme(self, ctx):
-        """Chooses a meme from r/memes"""
+        """Chooses a meme from various subreddits"""
         async with aiohttp.ClientSession() as session:
-            sub = random.choice(["memes", "dankmemes", "funny"])
-            async with session.get(f'https://www.reddit.com/r/{sub}/new.json?sort=hot') as r:
-                res = await r.json()
-                embed = discord.Embed(title=f"r/{sub}", color=0xff0000)
-                embed.set_image(url=res['data']['children'][random.randint(0, 20)]['data']['url'])
+            async with session.get("https://some-random-api.ml/meme") as cs:
+                js = await cs.json()
+                embed = discord.Embed(title=js['caption'], color=0xff0000)
+                embed.set_image(url=js["image"])
+                embed.set_footer(text=f"Category: {js['category']}")
                 await ctx.send(embed=embed)
 
 
