@@ -43,3 +43,4 @@ cuss_words = ["anus", "arse", "arsehole", "ass", "ass-hat", "ass-pirate", "assba
               "spick", "splooge", "spunk", "tard", "testicle", "thundercunt", "tit", "tits", "titfuck", "tittyfuck",
               "twat", "twatlips", "twatwaffle", "unclefucker", "va-j-j", "vag", "vagina", "vjayjay", "wank", "wetback",
               "whore", "whorebag", "whoreface"]
+
