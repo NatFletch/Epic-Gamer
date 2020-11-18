@@ -1,4 +1,4 @@
-token = "NzI4ODE4NzQyOTE3NzI2MjQ5.Xv_7WQ.-WwJYTZVUYttF9LKhTDwkexgxfk"
+token = "NzI4ODE4NzQyOTE3NzI2MjQ5.Xv_7WQ.1Ko4EbbRQ49-dQiy7QmDTADpTvQ"
 password = "NATUSD18034"
 cuss_words = ["anus", "arse", "arsehole", "ass", "ass-hat", "ass-pirate", "assbag", "assbandit", "assbanger", "assbite",
               "assclown", "asscock", "asscracker", "assface", "assfuck", "assfucker", "assgoblin", "asshat", "asshead",
