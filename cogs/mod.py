@@ -51,7 +51,7 @@ class Moderation(commands.Cog):
         if ctx.author.guild_permissions.manage_guild or commands.is_owner():
             msg = await ctx.send("Working... this may take a few seconds")
             statuses = sorted([f"{member} ({member.id}): {str(member.activity)}" for member in ctx.guild.members if member.activity is not None], key=str)
-            if len(statuses) is 0:
+            if len(statuses) == 0:
                 return await msg.edit(content="No statuses found")
             text = "\n".join(statuses)
             data = bytes(text, 'utf-8')
@@ -62,7 +62,6 @@ class Moderation(commands.Cog):
                     await msg.edit(content=f"https://hastebin.com/{key}")
         else:
             return
-
 
     @ban.error
     async def ban_error(self, ctx, error):
