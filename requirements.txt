@@ -1,0 +1,3 @@
+discord
+zalgo_text
+asyncpg
