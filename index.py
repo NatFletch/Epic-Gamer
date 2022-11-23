@@ -9,8 +9,8 @@ from discord.ext import commands
 e["JISHAKU_NO_UNDERSCORE"] = "True"
 tm.start()
 intents = discord.Intents.all()
-extensions = ["cogs.fun", "cogs.help", "cogs.mod", "cogs.utility", "cogs.logs", "cogs.developer",
-              "cogs.config", "cogs.eco", "cogs.manipulation", "cogs.modmail", "cogs.utils.error"]
+extensions = ["extensions.fun", "extensions.help", "extensions.mod", "extensions.utility", "extensions.logs", "extensions.developer",
+              "extensions.config", "extensions.eco", "extensions.manipulation", "extensions.modmail", "extensions.utils.error"]
 
 
 class EpicContext(commands.Context):
@@ -59,7 +59,7 @@ class EpicGamer(commands.AutoShardedBot):
             return commands.when_mentioned_or(guild['prefix'])(bot, message)
 
     async def on_ready(self):
-        print(f"MEE7 is up and running at {round(self.latency * 1000)}ms")
+        print(f"Epic Gamer is up and running at {round(self.latency * 1000)}ms")
 
     async def close(self):
         await self.db.close()
