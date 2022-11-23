@@ -24,7 +24,7 @@ Current list of extensions:
  ```git clone https://github.com/NatFletch/Epic-Gamer.git```
  - Open a terminal in the directory you cloned the repo and run:
  ```python3 -m pip install -U -r requirements.txt```
- - Once done make a folder called secret.py and paste the following contents
+ - Once done make a file called `secret.py` and paste the following contents
  ```secret.py
  token = "your bot token here"
  password = "your postgres password here"
