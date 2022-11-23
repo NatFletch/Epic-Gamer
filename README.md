@@ -1,6 +1,6 @@
 # Epic-Gamer
 
-This is a discord bot I stopped working on. Feel free to fork it and use it just be sure to give credit to me if you choose to. For the most part it should work fine, there are only database issues because I made it specifically for my computer. Eventually I will go back through this repo and update it to be more usable by everyone.
+This is a discord bot I stopped working on. Feel free to fork it and use it just be sure to give credit to me if you choose to. For the most part it should work fine, there are only database issues because I made it specifically for my computer.
 
 ## Features
 All the custom features with this bot are located in `/extensions/`
@@ -30,3 +30,5 @@ Current list of extensions:
  password = "your postgres password here"
  ```
  - After that run `python3 index.py` and you should be good to go
+
+###### This code is not compatible with Discord.py 2.x and I do not plan to migrate it anytime soon. If you don't want to make any major changes to code then wait until I get around to releasing Epic Gamer 2 (a rewrite basically)
