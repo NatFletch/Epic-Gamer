@@ -1,6 +1,8 @@
 # Epic-Gamer
 
-This is a discord bot I stopped working on. Feel free to fork it and use it just be sure to give credit to me if you choose to. For the most part it should work fine, there are only database issues because I made it specifically for my computer.
+This is a discord bot I stopped working on. Feel free to fork it and use it just be sure to give credit to me if you choose to.
+
+**PLEASE NOTE:** This bot was discontinued at an unfinished state back in 2020-2021. I went back and either removed some very unfinished commands or fixed their bugs. Not every bug is guaranteed to be fixed. If you come across a bug though, feel free to make a pull request! This was one of my very first projects I've made in Python and in programming in general so expect there to be weird and strange code that may not make sense or code that has never been refactored before.
 
 ## Features
 All the custom features with this bot are located in `/extensions/`
@@ -20,6 +22,8 @@ Current list of extensions:
 
 ## Installation
  - Install Python 3.8 or higher 
+ - Install PostgresSQL and setup a server
+ - Create a new Postgres database
  - Clone the repository:
  ```git clone https://github.com/NatFletch/Epic-Gamer.git```
  - Open a terminal in the directory you cloned the repo and run:
@@ -27,8 +31,8 @@ Current list of extensions:
  - Once done make a file called `secret.py` and paste the following contents
  ```secret.py
  token = "your bot token here"
+ db_name = "your database name here"
+ username = "your postgres username here"
  password = "your postgres password here"
  ```
  - After that run `python3 index.py` and you should be good to go
-
-###### This code is not compatible with Discord.py 2.x and I do not plan to migrate it anytime soon. If you don't want to make any major changes to code then wait until I get around to releasing Epic Gamer 2 (a rewrite basically)
