@@ -26,7 +26,7 @@ class Manipulation(commands.Cog):
     @commands.command(brief="**Cooldown:** None\n**Permissions Required:** `None`")
     async def reverse(self, ctx, *, text):
         """Says what you say in reverse"""
-        sentence = None
+        sentence = []
         for char in text:
             sentence.append(char)
             newList = reversed(sentence)
@@ -34,5 +34,5 @@ class Manipulation(commands.Cog):
         await ctx.send(f"{joinList}\nSent from {ctx.author}", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False, users=False))
 
 
-def setup(bot):
-    bot.add_cog(Manipulation(bot))
+async def setup(bot):
+    await bot.add_cog(Manipulation(bot))

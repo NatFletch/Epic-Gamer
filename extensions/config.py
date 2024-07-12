@@ -24,5 +24,5 @@ class Config(commands.Cog):
             await ctx.send("Please provide a prefix you want to change to.")
 
 
-def setup(bot):
-    bot.add_cog(Config(bot))
+async def setup(bot):
+    await bot.add_cog(Config(bot))

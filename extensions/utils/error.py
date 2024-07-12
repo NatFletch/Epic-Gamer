@@ -7,6 +7,7 @@ class Error(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CommandNotFound):
             pass
@@ -40,5 +41,5 @@ class Error(commands.Cog):
                                   color=0xff0000)
             await ctx.send(embed=embed)
 
-def setup(bot):
-    bot.add_cog(Error(bot))
+async def setup(bot):
+    await bot.add_cog(Error(bot))

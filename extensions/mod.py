@@ -1,7 +1,6 @@
 import discord
 import typing
-import secret
-import re
+import json
 import aiohttp
 from discord.ext import commands
 
@@ -14,16 +13,15 @@ class Moderation(commands.Cog):
 
     @commands.command(brief="**Cooldown:** None\n**Permissions Required:** `Manage Messages`", aliases=["strike"])
     @commands.has_permissions(manage_messages=True)
-    async def warn(self, ctx, member, *, reason: typing.Optional[str]):
+    async def warn(self, ctx, member: discord.Member, *, reason = None):
         """Warns a user in the guild"""
         if member == ctx.author:
             await ctx.send("I am not sure you want to do that")
-        guild = await self.bot.db.fetch("SELECT * FROM warnings WHERE server_id = $1", ctx.guild.id)
-        case_id = 0
-        case_id += guild['case_id']
-        await self.bot.db.execute("INSERT INTO warnings (server_id, case_id, user, reason, moderator) VALUES ($1, $2, $3, $4, $5)", ctx.guild.id, case_id, member.id, reason, ctx.author.id)
+        if reason is None:
+            reason = "No reason specified"
+        case = await self.bot.db.fetch("INSERT INTO warnings (server_id, user_id, reason, moderator) VALUES ($1, $2, $3, $4) RETURNING case_id", ctx.guild.id, member.id, reason, ctx.author.id)
         await ctx.send(f"{member} has been warned for: {reason}")
-        embed = discord.Embed(title="Warning!", description=f"You have been warned in {ctx.guild.name}\n**Reason:** {reason}\n**Moderator:** {ctx.author}", color=0xff0000)
+        embed = discord.Embed(title="Warning!", description=f"You have been warned in {ctx.guild.name}\n\n**Reason:** {reason}\n**Case ID: {case[0]["case_id"]}**\n**Moderator:** {ctx.author}", color=0xff0000)
         await member.send(embed=embed)
 
     @commands.command(brief="**Cooldown:** None\n**Permissions Required:** `Ban Members`")
@@ -54,12 +52,19 @@ class Moderation(commands.Cog):
             if len(statuses) == 0:
                 return await msg.edit(content="No statuses found")
             text = "\n".join(statuses)
-            data = bytes(text, 'utf-8')
+            
+            data = {
+                "files": [{
+                    "content": text
+                }]
+            }
+
+            headers = {"content-type": "application/json"}
             async with aiohttp.ClientSession() as cs:
-                async with cs.post('https://hastebin.com/documents', data=data) as r:
-                    res = await r.json()
-                    key = res["key"]
-                    await msg.edit(content=f"https://hastebin.com/{key}")
+                async with cs.post('https://mystb.in/api/paste', data=json.dumps(data), headers=headers) as resp:
+                    result = await resp.json()
+                    key = result["id"]
+                    await msg.edit(content=f"https://mystb.in/{key}")
         else:
             return
 
@@ -125,5 +130,5 @@ class Moderation(commands.Cog):
         pass
 
 
-def setup(bot):
-    bot.add_cog(Moderation(bot))
+async def setup(bot):
+    await bot.add_cog(Moderation(bot))

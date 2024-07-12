@@ -100,5 +100,5 @@ class Dev(commands.Cog):
         await ctx.send(f"Suggestions is now disabled")
 
 
-def setup(bot):
-    bot.add_cog(Dev(bot))
+async def setup(bot):
+    await bot.add_cog(Dev(bot))

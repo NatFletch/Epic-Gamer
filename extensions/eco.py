@@ -37,11 +37,11 @@ class Economy(commands.Cog):
             statusmsg = random.choice(("FIND!", "LOSS!"))
             locations = random.choice(("laundromat", "vending machine", "grocery store", "bathroom", "bush", "park", "trash can", "dumpster"))
             if statusmsg == "FIND!":
-                outcome = random.randint(1, 300)
+                outcome = random.randint(1, 75)
                 await self.bot.db.execute("UPDATE money SET amount = $1 WHERE user_id = $2", outcome + amount, ctx.author.id)
                 await ctx.send(f'{statusmsg} You found {outcome} dollars in a {locations}')
             elif statusmsg == "LOSS!":
-                outcome = random.randint(0, 200)
+                outcome = random.randint(1, 50)
                 msg = f"{statusmsg} You dropped {outcome} dollars in a {locations} and now you can\'t find it"
                 newoutcome = amount - outcome
                 if amount < outcome:
@@ -66,15 +66,19 @@ class Economy(commands.Cog):
             UserOutcome = random.randint(1, 10)
             status = None
             color = None
+            new = None
             if EpicGamerOutcome > UserOutcome:
                 new = user - amount
                 status = 'Lose'
                 color = 0xff0000
+                await ctx.set_money(new, ctx.author.id)
             elif UserOutcome > EpicGamerOutcome:
                 new = user + amount
                 status = 'Win'
                 color = 0x00ff00
+                await ctx.set_money(new, ctx.author.id)
             elif UserOutcome == EpicGamerOutcome:
+                new = user
                 color = 0xffff00
                 status = 'Tie. Lost nothing'
             await ctx.set_money(new)
@@ -86,5 +90,5 @@ class Economy(commands.Cog):
             return await ctx.send(f"You need to register an account first. Use {ctx.prefix}register to register.")
 
 
-def setup(bot):
-    bot.add_cog(Economy(bot))
+async def setup(bot):
+    await bot.add_cog(Economy(bot))

@@ -1,19 +1,7 @@
 
 .idea/*
 secret.py
-__pycache__/secret.cpython-38.pyc
+.venv/*
 __pycache__/*
-cogs.__pycache__/*
-
-cogs/__pycache__/config.cpython-38.pyc
-cogs/__pycache__/developer.cpython-38.pyc
-cogs/__pycache__/eco.cpython-38.pyc
-cogs/__pycache__/fun.cpython-38.pyc
-cogs/__pycache__/help.cpython-38.pyc
-cogs/__pycache__/info.cpython-38.pyc
-cogs/__pycache__/logs.cpython-38.pyc
-cogs/__pycache__/mod.cpython-38.pyc
-cogs/__pycache__/suggestions.cpython-38.pyc
-cogs/__pycache__/text.cpython-38.pyc
-cogs/__pycache__/utility.cpython-38.pyc
-*.pyc
+extensions/__pycache__/*
+extensions/utils/__pycache__/*

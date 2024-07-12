@@ -3,12 +3,11 @@ import asyncpg
 import traceback
 import tracemalloc as tm
 from os import environ as e
-from secret import token, password
+from secret import token, password, username, db_name
 from discord.ext import commands
 
 e["JISHAKU_NO_UNDERSCORE"] = "True"
 tm.start()
-intents = discord.Intents.all()
 extensions = ["extensions.fun", "extensions.help", "extensions.mod", "extensions.utility", "extensions.logs", "extensions.developer",
               "extensions.config", "extensions.eco", "extensions.manipulation", "extensions.modmail", "extensions.utils.error"]
 
@@ -38,28 +37,45 @@ class EpicContext(commands.Context):
         await self.bot.db.execute("UPDATE money SET amount = $1 WHERE user_id = $2", amount, member)
 
 
-class EpicGamer(commands.AutoShardedBot):
+class EpicGamer(commands.Bot):
     async def get_context(self, message, *, cls=EpicContext):
         return await super().get_context(message, cls=cls)
 
     def __init__(self):
-        super().__init__(command_prefix=EpicGamer.get_prefix, case_insensitive=True, help_command=None, shard_count=1, intents=intents, activity=discord.Activity(type=discord.ActivityType.listening, name=";help"), status=discord.Status.dnd)
-        self.db = self.loop.run_until_complete(asyncpg.create_pool(database='MEE7Data', user='postgres', password=password))
-        self.load_extension("jishaku")
-        for extension in extensions:
-            self.load_extension(extension)
+        super().__init__(
+            command_prefix=EpicGamer.get_prefix,
+            case_insensitive=True,
+            help_command=None,
+            intents=discord.Intents.all(),
+            activity=discord.Activity(type=discord.ActivityType.listening, name=";help"),
+            status=discord.Status.dnd
+        )
 
     async def get_prefix(bot, message):
         if message.guild is not None:
-            connection = await asyncpg.connect(database="MEE7Data", user="postgres", password=password)
-            guild = await connection.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", message.guild.id)
-            await connection.close()
+            guild = await bot.db.fetchrow("SELECT * FROM guilds WHERE guild_id = $1", message.guild.id)
             if not guild:
                 return commands.when_mentioned_or(';')(bot, message)
             return commands.when_mentioned_or(guild['prefix'])(bot, message)
 
     async def on_ready(self):
         print(f"Epic Gamer is up and running at {round(self.latency * 1000)}ms")
+
+    async def setup_db(self, conn):
+        await conn.execute(
+                        '''
+                           CREATE TABLE IF NOT EXISTS guilds (guild_id bigint, prefix text);
+                           CREATE TABLE IF NOT EXISTS money (amount bigint, user_id bigint);
+                           CREATE TABLE IF NOT EXISTS warnings (server_id bigint, case_id serial, user_id bigint, reason text, moderator bigint)
+                        '''
+                    )
+
+    async def setup_hook(self):
+        self.db = await asyncpg.create_pool(database=db_name, user=username, password=password)
+        await self.setup_db(self.db)
+        await self.load_extension("jishaku")
+        for extension in extensions:
+            await self.load_extension(extension)
 
     async def close(self):
         await self.db.close()
