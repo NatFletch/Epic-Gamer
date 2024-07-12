@@ -1,7 +1,4 @@
 discord
 zalgo_text
 asyncpg
-arrow
-aioscheduler
 jishaku
-dateparser
